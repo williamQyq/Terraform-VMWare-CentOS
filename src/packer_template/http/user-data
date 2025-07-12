@@ -1,0 +1,14 @@
+#cloud-config
+###############################################################################
+# AUTOMATED Centos INSTALLATION CONFIGURATION
+###############################################################################
+# This file contains the cloud-init configuration for the automated installation
+# of Centos during the template creation process.
+###############################################################################
+
+ssh_pwauth: true
+
+runcmd:
+  - sed -i 's/^#*PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+  - echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+  - systemctl restart sshd
