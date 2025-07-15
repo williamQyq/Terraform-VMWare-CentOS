@@ -1,5 +1,4 @@
-# Terraform + Packer vSphere Automation for Ridgebot Botctl (Minimum Compelling Product)
-
+# Terraform + Packer vSphere Automation for Ridgebot Botctl
 This module automates the provisioning of virtual machines in a vSphere environment using [Packer](https://www.packer.io/) and [Terraform](https://www.terraform.io/).
 
 ## Features
@@ -47,10 +46,6 @@ Terraform debug log: tf/log/terraform-debug-log.md
 
 ## License
 MIT
-
-## 👥 Contributors
-
-- [Yuqing Qiao (William)](https://github.com/YOUR_GITHUB_USERNAME) – Initial setup, Terraform/Packer integration, automation scripting
 
 <!-- Add more contributors as needed -->
 

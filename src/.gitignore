@@ -1,6 +1,7 @@
 tfplan
-.plan
+*.plan
 *.log
+**/log/*
 # Packer variable files
 secrets.pkrvars.hcl
 **/packer_cache/*
@@ -21,6 +22,7 @@ crash.log
 # to change depending on the environment.
 #
 *.tfvars
+!vars.auto.tfvars
 
 # Ignore override files as they are usually used to override resources locally and so
 # are not checked in

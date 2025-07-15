@@ -17,7 +17,7 @@ excluded_services=(
 )
 
 # Max wait time per service (seconds)
-max_wait=1800
+max_wait=2400
 interval=5
 
 # Function to wait for a single service
