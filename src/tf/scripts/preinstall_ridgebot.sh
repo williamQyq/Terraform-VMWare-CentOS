@@ -7,9 +7,11 @@ while [ ! -f /var/lib/cloud/instance/boot-finished ]; do
 done
 echo 'Cloud-init finished...'
 
+echo 'Running post install...'
+
 # Start botctl offline install systemd service
-echo 'Running post install'
-chmod +x /opt/service_botctl_offline_install.sh
-nohup /opt/service_botctl_offline_install.sh > /var/log/setup_post_service.log 2>&1 &
-sleep 1
-echo '📦 Script launched in background, Terraform exiting before IP changes.'
+if [[ -x /usr/bin/botctl ]]; then
+  nohup /usr/bin/botctl install --mode=offline &
+  sleep 1
+  echo '📦 Script launched in background, Terraform exiting before IP changes.'
+fi

@@ -21,3 +21,4 @@ provider "vsphere" {
   vsphere_server       = var.vsphere_vcenter  # vCenter server address from variables
   allow_unverified_ssl = true                 # Skip SSL verification (for self-signed certs)
 }
+
