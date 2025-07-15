@@ -4,7 +4,7 @@ resource "terraform_data" "post_script" {
 
   # Upload script as root, reuse botctl install script on remote vms if possible
   provisioner "file" {
-    source      = "${path.module}/scripts/service_botctl_offline_install.sh"
+    source      = "${path.root}/scripts/service_botctl_offline_install.sh"
     destination = "/opt/service_botctl_offline_install.sh"
 
     connection {
@@ -17,7 +17,7 @@ resource "terraform_data" "post_script" {
 
   # Execute pre-install script as root
   provisioner "remote-exec" {
-    script = "${path.module}/scripts/preinstall_ridgebot.sh"
+    script = "${path.root}/scripts/preinstall_ridgebot.sh"
 
     connection {
       type     = "ssh"
@@ -30,7 +30,7 @@ resource "terraform_data" "post_script" {
 
   # Installing, root user recreated, waiting for starting services
   provisioner "remote-exec" {
-    script = "${path.module}/scripts/installing_ridgebot.sh"
+    script = "${path.root}/scripts/installing_ridgebot.sh"
 
     connection {
       type     = "ssh"

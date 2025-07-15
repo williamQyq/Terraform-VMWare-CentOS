@@ -23,7 +23,7 @@ vm_guest_os_type = "ubuntu64Guest"        # vSphere guest OS identifier for Ubun
 
 # VM hardware version and firmware
 vm_version    = 19     # VM hardware version (14 is compatible with vSphere 6.7+)
-vm_firmware   = "efi"  # Using EFI firmware for modern boot support
+vm_firmware   = "bios"  # Using BIOS firmware for modern boot support
 vm_cdrom_type = "sata" # SATA CD-ROM type for better performance
 
 # VM CPU configuration
@@ -57,7 +57,7 @@ ssh_password = "admin" # Password for SSH access during build
 # iso_checksum      = "d6dab0c3a657988501b4bd76f1297c053df710e06e0c3aece60dead24f270b4d"       # SHA256 checksum
 # iso_checksum_type = "sha256"                                                                 # Checksum type (SHA256)
 # iso_url           = "https://releases.ubuntu.com/24.04/ubuntu-24.04.2-live-server-amd64.iso" # Download URL
-iso_path = "[Platform_Datastore] Platform_ISO/CentOS-Stream-9-20250224.1-x86_64-dvd1.iso" # Datastore path to ISO
+iso_path = "[QCA-Testbed] Platform_ISO/CentOS-Stream-9-20250224.1-x86_64-dvd1.iso" # Datastore path to ISO
 
-rb_version = "5.4.5"
-rb_tag     = "rb10"
+rb_version = "5.5.0"
+rb_tag     = "dev1"

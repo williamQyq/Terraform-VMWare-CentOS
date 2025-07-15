@@ -336,7 +336,7 @@ source "vsphere-iso" "centos-rb-prebuild" {
   }
 
   iso_paths =[
-    "[Platform_Datastore] Platform_ISO/CentOS-Stream-9-20250224.1-x86_64-dvd1.iso"
+    var.iso_path # Path to ISO on datastore
   ]
 
   # Installation media

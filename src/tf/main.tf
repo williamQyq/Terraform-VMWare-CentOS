@@ -1,31 +1,3 @@
-# ###############################################################################
-# # TERRAFORM CONFIGURATION
-# ###############################################################################
-# # This block configures Terraform itself, including required providers
-# # and their versions. This ensures consistency across deployments.
-# ###############################################################################
-# terraform {
-#   required_providers {
-#     vsphere = {
-#       source  = "hashicorp/vsphere" # The source of the vSphere provider
-#       version = "2.4.0"            # The specific version of the provider to use
-#     }
-#   }
-# }
-
-###############################################################################
-# PROVIDER CONFIGURATION
-###############################################################################
-# The provider block configures the specified provider, in this case VMware vSphere.
-# This includes authentication details and connection parameters.
-###############################################################################
-provider "vsphere" {
-  user                 = var.vsphere_user     # vSphere username from variables
-  password             = var.vsphere_password # vSphere password from variables
-  vsphere_server       = var.vsphere_vcenter  # vCenter server address from variables
-  allow_unverified_ssl = true                 # Skip SSL verification (for self-signed certs)
-}
-
 ###############################################################################
 # DATA SOURCES
 ###############################################################################
@@ -61,77 +33,50 @@ data "vsphere_virtual_machine" "template" {
   name          = "${var.vm-template-name}"
   datacenter_id = data.vsphere_datacenter.dc.id # Reference to the datacenter above
 }
-
 ###############################################################################
 # VIRTUAL MACHINE RESOURCE
 ###############################################################################
-# This resource block creates multiple virtual machines based on the VMs defined
-# in the locals block in variables.tf. Using for_each allows us to create
-# multiple VMs in parallel with different configurations.
-###############################################################################
-resource "vsphere_virtual_machine" "vm" {
-  # Create one VM for each entry in the local.vms map
-  for_each = local.vms
+module "vm_group1" {
+  source           = "./modules/vm_group1" # Path to the module containing VM definitions
+  
+  providers = {
+    vsphere = vsphere # Use the vSphere provider configured above
+  }
 
-  # Basic VM settings
-  name             = each.value.name                                       # Name from the VM configuration
-  resource_pool_id = data.vsphere_host.host.resource_pool_id # Cluster resource pool
+  resource_pool_id = data.vsphere_host.host.resource_pool_id # Use the resource pool from the host data source
   datastore_id     = data.vsphere_datastore.datastore.id                   # Datastore for VM files
+  
+  # VM configuration variables
+  thin_provisioned = data.vsphere_virtual_machine.template.disks.0.thin_provisioned # Same provisioning as template
+  eagerly_scrub    = data.vsphere_virtual_machine.template.disks.0.eagerly_scrub    # Same scrubbing as template
+  cores-per-socket = var.cores-per-socket
+  vm-guest-id      = var.vm-guest-id      # Guest OS identifier
+  
+  # Network configuration
+  network_id      = data.vsphere_network.network.id                                  # Network from data source
+  adapter_type    = data.vsphere_virtual_machine.template.network_interface_types[0] # Same adapter type as template
+  ipv4_gateway = var.ipv4_gateway # Gateway for the network
+  dns_server_list = var.dns_server_list
+  ipv4_netmask = var.ipv4_netmask # Netmask for the network
+ 
+  # Template configuration
+  template_uuid = data.vsphere_virtual_machine.template.id # Template UUID from data source
+  vm-template-name = var.vm-template-name # Name of the template to clone
+  folder = "/${var.vsphere-datacenter}/vm/${var.vsphere-template-folder}/" # The template folder
 
   # Hardware configuration
-  num_cpus             = each.value.cpu       # CPU count from VM configuration
-  num_cores_per_socket = var.cores-per-socket # Cores per socket from variables
-  memory               = each.value.ram       # RAM amount from VM configuration
-  guest_id             = var.vm-guest-id      # Guest OS identifier
+  ram = var.ram # RAM amount for the VMs
+  cpu = var.cpu # CPU count for the VMs
+  disksize = var.disksize # Disk size for the VMs
 
-  # Network configuration - each VM gets one network adapter
-  network_interface {
-    network_id   = data.vsphere_network.network.id                                  # Network from data source
-    adapter_type = data.vsphere_virtual_machine.template.network_interface_types[0] # Same adapter type as template
-  }
+  ssh_username = var.ssh_username # SSH username for the VMs
+  ssh_password = var.ssh_password # SSH password for the VMs
 
-  # Disk configuration - each VM gets one disk
-  disk {
-    label            = "${each.value.name}-disk"                                      # Disk label based on VM name
-    thin_provisioned = data.vsphere_virtual_machine.template.disks.0.thin_provisioned # Same provisioning as template
-    eagerly_scrub    = data.vsphere_virtual_machine.template.disks.0.eagerly_scrub    # Same scrubbing as template
-    size             = each.value.disksize                                            # Disk size from VM configuration
-  }
+}
 
-  # Clone from template
-  clone {
-    template_uuid = data.vsphere_virtual_machine.template.id # Template UUID from data source
-  }
-
-  # Cloud-init configuration for first-boot customization
-  # This passes metadata and user-data to the VM, encoded in base64
-  extra_config = {
-    # Metadata includes network configuration and hostname
-    "guestinfo.metadata" = base64encode(templatefile("${path.module}/templates/metadata.yaml", merge(local.common_templatevars, {
-      name         = each.value.name,
-#       ipv4_address = each.value.ipv4_address
-    })))
-    "guestinfo.metadata.encoding" = "base64"
-
-    # User-data includes SSH keys and packages to install
-    "guestinfo.userdata" = base64encode(templatefile("${path.module}/templates/userdata.yaml", merge(local.common_templatevars, {
-      name = each.value.name
-    })))
-    "guestinfo.userdata.encoding" = "base64"
-  }
-  folder = "/${var.vsphere-datacenter}/vm/${var.vsphere-template-folder}/" #The template folder
-
-  # Lifecycle configuration to prevent unnecessary changes
-  lifecycle {
-    ignore_changes = [
-      annotation,                                # Don't update if annotation changes
-      clone[0].template_uuid,                    # Don't recreate if template UUID changes
-      clone[0].customize[0].dns_server_list,     # Don't recreate if DNS servers change
-      clone[0].customize[0].network_interface[0] # Don't recreate if network config changes
-    ]
-  }
-
-  # Firmware configuration
-  firmware                = "efi" # Use EFI firmware instead of BIOS
-  efi_secure_boot_enabled = false # Disable secure boot for compatibility
+output "vm_group1_ips" {
+  value = module.vm_group1.ip_addresses # Outputs the IP addresses of the VMs created in this module
+}
+output "vm_group1_names" {
+  value = module.vm_group1.vm_names # Outputs the names of the VMs created in this module
 }

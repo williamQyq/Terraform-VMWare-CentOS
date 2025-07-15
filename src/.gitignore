@@ -1,4 +1,5 @@
 tfplan
+.plan
 *.log
 # Packer variable files
 secrets.pkrvars.hcl

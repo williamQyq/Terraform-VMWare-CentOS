@@ -6,56 +6,61 @@
 # displayed in console output or logs.
 #===========================#
 
-variable "vsphere_user" {
+variable "resource_pool_id" {
   type        = string
-  description = "VMware vSphere user name"
-  sensitive   = true # Marked sensitive to hide in logs and console output
+  description = "Resource pool ID for the vSphere cluster"
+  # The resource pool where VMs will be created, typically derived from the host data source
+  
 }
 
-variable "vsphere_password" {
+variable "datastore_id" {
   type        = string
-  description = "VMware vSphere password"
-  sensitive   = true # Marked sensitive to hide in logs and console output
+  description = "Datastore ID for the vSphere cluster"
+  # The datastore where VM files will be stored, typically derived from the datastore data source
+  
 }
 
-variable "vsphere_vcenter" {
+variable "network_id" {
   type        = string
-  description = "VMWare vCenter server FQDN / IP"
-  sensitive   = true # Marked sensitive to hide in logs and console output
+  description = "Network ID for the vSphere cluster"
+  # The network to which VMs will be connected, typically derived from the network data source
+  
+}
+variable "adapter_type" {
+  type        = string
+  description = "Network adapter type for the VMs"
+  # The type of network adapter to use, typically derived from the template data source
+  
 }
 
-variable "vsphere-unverified-ssl" {
-  type        = string
-  description = "Is the VMware vCenter using a self signed certificate (true/false)"
-  # Set to 'true' if using self-signed certificates in vCenter
+variable "thin_provisioned" {
+  type        = bool
+  description = "Whether the VM disks should be thin provisioned"
+  # Indicates if the VM disks should be thin provisioned, typically derived from the template data source
+  
+}
+variable "eagerly_scrub" {
+  type        = bool
+  description = "Whether the VM disks should be eagerly scrubbed"
+  # Indicates if the VM disks should be eagerly scrubbed, typically derived from the template data source
+  
 }
 
-#===========================#
-# vSphere Infrastructure    #
-#===========================#
-# These variables define the existing vSphere infrastructure components
-# where VMs will be deployed, such as datacenter, cluster, and template folder.
-#===========================#
-
-variable "vsphere-datacenter" {
+variable "template_uuid" {
   type        = string
-  description = "VMWare vSphere datacenter"
-  # The name of the datacenter in vSphere where VMs will be deployed
+  description = "UUID of the vSphere template to clone"
+  # The UUID of the template from which VMs will be cloned, typically derived from the template data source
+  
 }
 
-variable "vsphere-cluster" {
+variable "folder" {
   type        = string
-  description = "VMWare vSphere cluster"
+  description = "Folder in vSphere where the VM will be created"
   default     = ""
-  # The name of the cluster within the datacenter where VMs will be deployed
+  # The folder in vSphere where the VM will be created, typically derived from the template folder variable
+  
 }
 
-variable "vsphere-template-folder" {
-  type        = string
-  description = "Template folder"
-  default     = "Templates"
-  # The folder where VM templates are stored in vSphere
-}
 
 #================================#
 # VMware vSphere virtual machine #
@@ -73,17 +78,6 @@ variable "vm-name-prefix" {
   # This prefix is used for naming VMs in traditional deployments (not used with for_each)
 }
 
-variable "vm-datastore" {
-  type        = string
-  description = "Datastore used for the vSphere virtual machines"
-  # The datastore where VM files will be stored
-}
-
-variable "vm-network" {
-  type        = string
-  description = "Network used for the vSphere virtual machines"
-  # The network to which VMs will be connected
-}
 
 variable "vm-linked-clone" {
   type        = string
@@ -119,7 +113,7 @@ variable "ram" {
 
 variable "disksize" {
   description = "Disk size in GB (default value, can be overridden per VM in locals)"
-  default     = 200
+  default     = 40
   # The size of the primary disk in gigabytes
 }
 
@@ -200,4 +194,43 @@ variable "public_key" {
   description = "Public key to be used to ssh into a machine"
   default     = ""
   # The SSH public key that will be added to authorized_keys on the VMs
+}
+
+#================================#
+# VM Configuration               #
+#================================#
+# This locals block defines the specific VMs to create and their
+# individual configurations. This is the main place to add or modify VMs.
+#================================#
+
+locals {
+  # Define multiple VMs with their specific configurations
+  vms = {
+    "vm1" = {
+      name         = "${var.vm-name-prefix}-vm1" # Name of the first VM
+#       ipv4_address = "192.168.1.97"    # Static IP address for the first VM
+      cpu          = var.cpu           # Use the default CPU count
+      ram          = var.ram           # Use the default RAM amount
+      disksize     = var.disksize      # Use the default disk size
+    },
+    "vm2" = {
+      name         = "${var.vm-name-prefix}-vm2" # Name of the second VM
+#       ipv4_address = "192.168.1.98"    # Static IP address for the second VM
+      cpu          = var.cpu           # Use the default CPU count
+      ram          = var.ram           # Use the default RAM amount
+      disksize     = var.disksize      # Use the default disk size
+    }
+    # Add more VMs as needed by adding more entries to this map
+  }
+
+  # Common template variables for all VMs
+  # These values are passed to the cloud-init templates for VM customization
+  common_templatevars = {
+    ipv4_gateway = var.ipv4_gateway,       # Default gateway for all VMs
+    dns_server_1 = var.dns_server_list[0], # Primary DNS server
+    dns_server_2 = var.dns_server_list[1], # Secondary DNS server
+    public_key   = var.public_key,         # SSH public key for authentication
+    ssh_username = var.ssh_username        # SSH username for the VMs
+    ssh_password = var.ssh_password
+  }
 }

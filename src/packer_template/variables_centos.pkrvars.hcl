@@ -18,12 +18,12 @@ http_directory = "http" # Directory containing cloud-init files (user-data, meta
 # These settings define the hardware and OS configuration for the template VM
 
 # Basic VM identity
-vm_name          = "CentOS-willqiao-vm-Template" # Name of the template VM in vSphere
-vm_guest_os_type = "centos9_64Guest"        # vSphere guest OS identifier for Ubuntu 64-bit
+vm_name          = "centos-willqiao-vm-template" # Name of the template VM in vSphere
+vm_guest_os_type = "centos7_64Guest"        # vSphere guest OS identifier for Ubuntu 64-bit
 
 # VM hardware version and firmware
-vm_version    = 19     # VM hardware version (14 is compatible with vSphere 6.7+)
-vm_firmware   = "efi"  # Using EFI firmware for modern boot support
+vm_version    = 13     # VM hardware version (14 is compatible with vSphere 6.7+)
+vm_firmware   = "efi"  # Using efi firmware for modern boot support
 vm_cdrom_type = "sata" # SATA CD-ROM type for better performance
 
 # VM CPU configuration
@@ -56,6 +56,6 @@ vm_boot_wait = "10s"    # Wait 10 seconds before sending boot commands
 # iso_checksum_type = "sha256"                                                                 # Checksum type (SHA256)
 # iso_url           = "https://releases.ubuntu.com/24.04/ubuntu-24.04.2-live-server-amd64.iso" # Download URL
 
-rb_version = "5.4.3"
-rb_tag     = "rb6"
-server_idc = "172.30.101.201"
+rb_version = "5.5.0"
+rb_tag     = "dev1"
+iso_path  = "[QCA-Testbed] Platform_ISO/CentOS-Stream-9-latest-x86_64-dvd1.iso" # Path to ISO on datastore
