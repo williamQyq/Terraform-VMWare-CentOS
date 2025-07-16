@@ -56,6 +56,7 @@ vm_boot_wait = "10s"    # Wait 10 seconds before sending boot commands
 # iso_checksum_type = "sha256"                                                                 # Checksum type (SHA256)
 # iso_url           = "https://releases.ubuntu.com/24.04/ubuntu-24.04.2-live-server-amd64.iso" # Download URL
 
-rb_version = "5.5.0"
-rb_tag     = "dev1"
+# rb_version = "5.5.0"
+# rb_tag     = "dev1"
 iso_path  = "[QCA-Testbed] Platform_ISO/CentOS-Stream-9-latest-x86_64-dvd1.iso" # Path to ISO on datastore
+# iso_path = "[Platform_Datastore] Platform_ISO/CentOS-Stream-9-20250224.1-x86_64-dvd1.iso"

@@ -23,7 +23,7 @@ terraform-packer-vsphere/
 
 ```bash
 cd terraform-packer-vsphere/packer_template  
-setup.sh centos_iso.pkr.hcl #or use your *.pkr.hcl
+setup.sh centos_iso.pkr.hcl {RB_VERSION} {RB_TAG} #or use your *.pkr.hcl
 ```
 
 ### 2. Provision VMs with Terraform

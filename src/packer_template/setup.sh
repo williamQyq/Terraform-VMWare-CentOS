@@ -17,6 +17,8 @@ cd "$(dirname "$0")"
 
 # The template packer file for first argument.
 packer_file=$1
+rb_version=$2
+rb_tag=$3
 
 ###############################################################################
 # DEPENDENCY VALIDATION
@@ -63,6 +65,9 @@ PACKER_LOG_PATH="./log/packer-log-${timestamp}.log" \
 packer build -force -on-error=ask \
   -var-file=secrets.pkrvars.hcl \
   -var-file=variables_centos.pkrvars.hcl \
+  -var="rb_version=${rb_version}" \
+  -var="rb_tag=${rb_tag}" \
+  -var="vm_name=centos-rb-${rb_version}-${rb_tag}-vm-template" \
   "$packer_file"
 
 echo "Build process completed!"
