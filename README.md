@@ -1,5 +1,5 @@
 # Terraform + Packer vSphere Automation for Ridgebot Botctl
-This module automates the provisioning of virtual machines in a vSphere environment using [Packer](https://www.packer.io/) and [Terraform](https://www.terraform.io/).
+This module automates the provisioning of virtual machines in vSphere environment using [Packer](https://www.packer.io/) and [Terraform](https://www.terraform.io/).
 
 ## Features
 
@@ -7,7 +7,7 @@ This module automates the provisioning of virtual machines in a vSphere environm
 - Uses Kickstart and cloud-init for unattended OS setup
 - Provisions VMs via Terraform with custom user-data and metadata templates
 - Includes post-install scripts for RidgeBot automated deployment
-- Supports offline installation workflows
+- Support 2 vcenter VM provision
 
 ## Structure
 
@@ -30,14 +30,23 @@ setup.sh centos_iso.pkr.hcl {RB_VERSION} {RB_TAG} #or use your *.pkr.hcl
 ```bash
 # pwd: terraform-packer-vsphere/tf/
 
-terraform init
-terraform plan -out=tfplan && terraform apply -auto-approve tfplan
+# Provision for 242 vSphere
+sh staging.sh
 ```
 
 ## Configuration
-Modify variables.pkrvars.hcl / terraform.tfvars for environment-specific settings
+Modify *.pkrvars.hcl / *.tfvars for environment-specific settings
+```bash
+#Packer config - $pwd: src/packer_template 
+secrets.pkrvars.hcl     #vSphere config
+variables.pkrvars.hcl   #Template config
+``` 
 
-> ⚠️ **Secrets:** Secrets and credentials should go into secrets.pkrvars.hcl (not committed)**
+```bash
+#Terraform config - $pwd: src/tf 
+vsphere_[240|242].tfvars    #vSphere config
+group[240|242].tfvars       #VM config
+``` 
 
 ## Logs
 Packer logs: packer_template/log/
@@ -47,8 +56,12 @@ Terraform debug log: tf/log/terraform-debug-log.md
 ## License
 MIT
 
+## Contributor
+Yuqing(William) Qiao  
+Heran Wang
+
 <!-- Add more contributors as needed -->
 
 ## 📅 Last Updated
 
-June 9th - July 11, 2025
+June 9th - July 16, 2025

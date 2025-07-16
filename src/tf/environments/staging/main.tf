@@ -7,29 +7,34 @@
 
 # Get information about the datacenter
 data "vsphere_datacenter" "dc" {
+  provider = vsphere.vsphere242 # Use the vSphere provider configured above
   name = var.vsphere-datacenter # The name of the datacenter in vSphere
 }
 
 # Get information about the datastore where VMs will be stored
 data "vsphere_datastore" "datastore" {
+  provider = vsphere.vsphere242
   name          = var.vm-datastore              # The name of the datastore
   datacenter_id = data.vsphere_datacenter.dc.id # Reference to the datacenter above
 }
 
 # Get information about the compute cluster where VMs will run
 data "vsphere_host" "host" {
+  provider = vsphere.vsphere242
   name          = var.vsphere-cluster           # The name of the cluster
   datacenter_id = data.vsphere_datacenter.dc.id # Reference to the datacenter above
 }
 
 # Get information about the network where VMs will be connected
 data "vsphere_network" "network" {
+  provider = vsphere.vsphere242
   name          = var.vm-network                # The name of the network
   datacenter_id = data.vsphere_datacenter.dc.id # Reference to the datacenter above
 }
 
 # Get information about the template that will be used to create VMs
 data "vsphere_virtual_machine" "template" {
+  provider = vsphere.vsphere242
   name          = "${var.vm-template-name}"
   datacenter_id = data.vsphere_datacenter.dc.id # Reference to the datacenter above
 }
@@ -37,11 +42,11 @@ data "vsphere_virtual_machine" "template" {
 # VIRTUAL MACHINE RESOURCE
 ###############################################################################
 module "vm_group1" {
-  source           = "./modules/vm_group1" # Path to the module containing VM definitions
-  
-  # providers = {
-  #   vsphere.vsphere242 = vsphere.vsphere242 # Use the vSphere provider configured above
-  # }
+  source           = "../../modules/vm_group1" # Path to the module containing VM definitions
+
+  providers = {
+    vsphere = vsphere.vsphere242 # Use the vSphere provider configured above
+  }
 
   resource_pool_id = data.vsphere_host.host.resource_pool_id # Use the resource pool from the host data source
   datastore_id     = data.vsphere_datastore.datastore.id                   # Datastore for VM files

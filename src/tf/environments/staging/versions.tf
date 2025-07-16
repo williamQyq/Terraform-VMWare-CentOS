@@ -9,14 +9,10 @@ terraform {
     }
   }
 }
-###############################################################################
-# PROVIDER CONFIGURATION
-###############################################################################
-# The provider block configures the specified provider, in this case VMware vSphere.
-# This includes authentication details and connection parameters.
-###############################################################################
+
 
 provider "vsphere" {
+  alias               = "vsphere242"
   user                 = var.vsphere_user     # vSphere username from variables
   password             = var.vsphere_password # vSphere password from variables
   vsphere_server       = var.vsphere_vcenter  # vCenter server address from variables

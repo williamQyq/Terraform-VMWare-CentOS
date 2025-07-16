@@ -53,14 +53,14 @@ resource "vsphere_virtual_machine" "vm" {
   # This passes metadata and user-data to the VM, encoded in base64
   extra_config = {
     # Metadata includes network configuration and hostname
-    "guestinfo.metadata" = base64encode(templatefile("${path.root}/templates/metadata.yaml", merge(local.common_templatevars, {
+    "guestinfo.metadata" = base64encode(templatefile("${path.module}/../../templates/metadata.yaml", merge(local.common_templatevars, {
       name         = each.value.name,
 #       ipv4_address = each.value.ipv4_address
     })))
     "guestinfo.metadata.encoding" = "base64"
 
     # User-data includes SSH keys and packages to install
-    "guestinfo.userdata" = base64encode(templatefile("${path.root}/templates/userdata.yaml", merge(local.common_templatevars, {
+    "guestinfo.userdata" = base64encode(templatefile("${path.module}/../../templates/userdata.yaml", merge(local.common_templatevars, {
       name = each.value.name
     })))
     "guestinfo.userdata.encoding" = "base64"

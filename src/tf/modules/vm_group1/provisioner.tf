@@ -4,7 +4,7 @@ resource "terraform_data" "post_script" {
 
   # Pre-install botctl
   provisioner "remote-exec"{
-    script = "${path.root}/scripts/preinstall_ridgebot.sh"
+    script = "${path.module}/../../scripts/preinstall_ridgebot.sh"
 
     connection{
       type     = "ssh"
@@ -16,7 +16,7 @@ resource "terraform_data" "post_script" {
 
   # Waiting for services starting
   provisioner "remote-exec" {
-    script = "${path.root}/scripts/installing_ridgebot.sh"
+    script = "${path.module}/../../scripts/installing_ridgebot.sh"
 
     connection {
       type     = "ssh"
