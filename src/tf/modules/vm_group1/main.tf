@@ -37,16 +37,6 @@ resource "vsphere_virtual_machine" "vm" {
   # Clone from template
   clone {
     template_uuid = var.template_uuid # Template UUID from data source
-
-    # customize{
-    #   linux_options {
-    #     host_name = each.value.name # Hostname for the VM
-    #     domain = var.vm-domain # Domain for the VM
-    #   }
-    #   # use dhcp for network configuration
-    #   network_interface {        
-    #   }
-    # }
   }
 
   # Cloud-init configuration for first-boot customization

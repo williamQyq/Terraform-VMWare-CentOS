@@ -80,14 +80,12 @@ variable "vm-name-prefix" {
 variable "rb_version" {
   type        = string
   description = "Version of RidgeBot to install on the VM"
-  default     = "latest" # Default version of RidgeBot
   # The version of RidgeBot to be installed on the VMs
 }
 
 variable "rb_tag" {
   type        = string
   description = "Tag for RidgeBot to install on the VM"
-  default     = "rblatest" # Default tag for RidgeBot
   # The tag of RidgeBot to be installed on the VMs
   
 }

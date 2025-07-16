@@ -16,11 +16,11 @@ plan-staging: init-staging
 		-out=$(PLAN)
 
 apply-staging: plan-staging
-	TF_LOG=DEBUG terraform -chdir=$(CHDIR) apply \
+	terraform -chdir=$(CHDIR) apply \
 		-var-file=$(FILE) \
 		-var-file=$(GROUP) \
 		-auto-approve \
-		$(PLAN) 2>&1 | sed 's/^/### /' | tee $(LOG)
+		$(PLAN)
 
 destroy-staging:
 	terraform -chdir=$(CHDIR) destroy \
