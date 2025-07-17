@@ -11,9 +11,8 @@ echo 'Running post install...'
 
 # Start botctl offline install systemd service
 if [[ -x /usr/bin/botctl ]]; then
-  nohup /usr/bin/botctl install --mode=offline & > /var/log/qca_post_install.log 2>&1 &
+  nohup /usr/bin/botctl install --mode=offline &
   sleep 1
   echo '📦 Botctl offline install started in background.'
+  exit 0
 fi
-
-exit 0

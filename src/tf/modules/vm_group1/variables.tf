@@ -191,7 +191,7 @@ variable "ssh_username" {
   type        = string
   description = "SSH username for VM access"
   sensitive   = true
-  default     = "manager"
+  default     = "root"
   # The username that will be created on the VMs and used for SSH access
 }
 variable "ssh_password" {
@@ -207,41 +207,3 @@ variable "public_key" {
   # The SSH public key that will be added to authorized_keys on the VMs
 }
 
-#================================#
-# VM Configuration               #
-#================================#
-# This locals block defines the specific VMs to create and their
-# individual configurations. This is the main place to add or modify VMs.
-#================================#
-
-locals {
-  # Define multiple VMs with their specific configurations
-  vms = {
-    "vm1" = {
-      name         = "${var.vm-name-prefix}-${var.rb_version}-${var.rb_tag}-vm1" # Name of the first VM
-#       ipv4_address = "192.168.1.97"    # Static IP address for the first VM
-      cpu          = var.cpu           # Use the default CPU count
-      ram          = var.ram           # Use the default RAM amount
-      disksize     = var.disksize      # Use the default disk size
-    },
-    "vm2" = {
-      name         = "${var.vm-name-prefix}-${var.rb_version}-${var.rb_tag}-vm2" # Name of the second VM
-#       ipv4_address = "192.168.1.98"    # Static IP address for the second VM
-      cpu          = var.cpu           # Use the default CPU count
-      ram          = var.ram           # Use the default RAM amount
-      disksize     = var.disksize      # Use the default disk size
-    }
-    # Add more VMs as needed by adding more entries to this map
-  }
-
-  # Common template variables for all VMs
-  # These values are passed to the cloud-init templates for VM customization
-  common_templatevars = {
-    ipv4_gateway = var.ipv4_gateway,       # Default gateway for all VMs
-    dns_server_1 = var.dns_server_list[0], # Primary DNS server
-    dns_server_2 = var.dns_server_list[1], # Secondary DNS server
-    public_key   = var.public_key,         # SSH public key for authentication
-    ssh_username = var.ssh_username        # SSH username for the VMs
-    ssh_password = var.ssh_password
-  }
-}

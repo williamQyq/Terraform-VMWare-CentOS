@@ -21,13 +21,13 @@ max_wait=1800
 interval=5
 
 # Function to wait for a single service
-wait_for_service_exists() {
+wait_for_service() {
   local svc="$1"
   local waited=0
 
   echo "⏳ Waiting for service: $svc"
 
-  while ! systemctl list-unit-files | grep -q "^${svc}.service"; do
+  while ! systemctl is-active --quiet "$svc";  do
     if (( waited >= max_wait )); then
       echo "❌ Timeout waiting for $svc after $max_wait seconds."
       return 1
@@ -59,7 +59,7 @@ done
 all_ok=true
 
 for service in "${filtered_services[@]}"; do
-  if ! wait_for_service_exists "$service"; then
+  if ! wait_for_service "$service"; then
     all_ok=false
   fi
 done
@@ -81,5 +81,3 @@ gpasswd -d root otpusers
 nmcli device disconnect ens192
 sleep 1
 nmcli device connect ens192
-
-/usr/sbin/reboot
