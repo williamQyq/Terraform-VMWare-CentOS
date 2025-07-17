@@ -11,8 +11,9 @@ echo 'Running post install...'
 
 # Start botctl offline install systemd service
 if [[ -x /usr/bin/botctl ]]; then
-  nohup /usr/bin/botctl install --mode=offline &
+  nohup /usr/bin/botctl install --mode=offline & > /var/log/qca_post_install.log 2>&1 &
+  sleep 1
+  echo '📦 Botctl offline install started in background.'
 fi
 
-sleep 3
-echo '📦 Script launched in background, Terraform exiting before IP changes.'
+exit 0

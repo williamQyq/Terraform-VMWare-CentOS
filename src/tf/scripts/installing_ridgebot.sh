@@ -66,10 +66,8 @@ done
 
 if $all_ok; then
   echo "✅ All services are active."
-  exit 0
 else
   echo "⚠️ Some services failed to start."
-  exit 0
 fi
 
 while ! tail -n 1 /opt/aibot_installation.log | grep -q "Service completed. Press Ctrl+Alt+Del to reboot."; do
