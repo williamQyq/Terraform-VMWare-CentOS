@@ -19,6 +19,21 @@ src/
 
 ## Getting Started
 
+### ‼️Secrets Configuration - not included
+Modify *.pkrvars.hcl / *.tfvars for environment-specific settings
+```bash
+#Packer config - $pwd: src/packer_template 
+secrets.pkrvars.hcl     #vSphere config
+variables.pkrvars.hcl   #Template config
+``` 
+
+```bash
+#Terraform config - $pwd: src/tf 
+vsphere_(240|242).tfvars    #vSphere secrets
+group(240|242).tfvars       #VM config
+``` 
+
+
 ### 1. Build Template Image with Packer
 
 ```bash
@@ -31,22 +46,10 @@ setup.sh centos_iso.pkr.hcl {RB_VERSION} {RB_TAG} #or use your *.pkr.hcl
 # pwd: terraform-packer-vsphere/tf/
 
 # Provision for 242 vSphere
-sh staging.sh
+make init-staging
+make plan-staging
+make apply-staging
 ```
-
-## Configuration
-Modify *.pkrvars.hcl / *.tfvars for environment-specific settings
-```bash
-#Packer config - $pwd: src/packer_template 
-secrets.pkrvars.hcl     #vSphere config
-variables.pkrvars.hcl   #Template config
-``` 
-
-```bash
-#Terraform config - $pwd: src/tf 
-vsphere_[240|242].tfvars    #vSphere config
-group[240|242].tfvars       #VM config
-``` 
 
 ## Logs
 Packer logs: packer_template/log/
@@ -64,4 +67,4 @@ Heran Wang
 
 ## 📅 Last Updated
 
-June 9th - July 16, 2025
+June 9th - July 18, 2025

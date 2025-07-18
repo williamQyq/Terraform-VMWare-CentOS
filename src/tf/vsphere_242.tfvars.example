@@ -1,0 +1,7 @@
+vsphere_user     = "provision@qca.local"
+vsphere_password = ""
+vsphere_vcenter  = ""
+
+public_key       = ""
+ssh_username       = "root" # SSH username for VM access
+ssh_password       = "admin" # SSH password for VM access
