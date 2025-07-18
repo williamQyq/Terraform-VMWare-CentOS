@@ -78,8 +78,16 @@ done
 echo "Removed root from otpusers group"
 gpasswd -d root otpusers
 
+# Enable SSH and firewall rules
+echo "Port 22" >> /etc/ssh/sshd_config
+firewall-cmd --permanent --zone=public --add-port=22/tcp
+firewall-cmd --permanent --add-service=ssh
+firewall-cmd --reload
+systemctl restart sshd
+
 nmcli device disconnect ens192
 sleep 1
 nmcli device connect ens192
 sleep 1
+
 
