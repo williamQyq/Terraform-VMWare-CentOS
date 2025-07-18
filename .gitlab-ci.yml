@@ -1,11 +1,49 @@
 stages:          # List of stages for jobs, and their order of execution
-  - build
+  - idc
+  - template
+  - vm
 
-build-job:       # This job runs in the build stage, which runs first.
-  stage: build
-  script:
-    - echo "Compiling the code..."
-    - echo "Compile complete."
+check-artifacts-job:       # This job runs in the build stage, which runs first.
+  stage: idc
   only:
-    - /^v\d+\.\d+\.\d+$/   # Only run for tags like v1.0.0
+    - /^v\d+\.\d+\.\d+.rb\d+$/   # Only run for tags like v1.0.0.rb0
+  script:
+    - GIT_TAG=${CI_COMMIT_TAG#v}
+    - VERSION=${GIT_TAG%.*}
+    - RB_TAG=${GIT_TAG##*.}
+    - echo "Checking artifacts if exists on IDC..."
+    - |
+      if ! curl -fsSLI http://172.30.101.201:85/${VERSION}/v${VERSION}.${RB_TAG}/ >/dev/null; then
+        echo "❌ IDC artifacts not found: ${VERSION} ${RB_TAG}";
+        exit 1
+      fi
+      echo "✅ IDC artifacts ${VERSION} ${RB_TAG} exist";
+
+build-vm-template-job:
+  stage: template
+  only:
+    - /^v\d+\.\d+\.\d+.rb\d+$/   # Only run for tags like v1.0.0.rb0
+  needs:
+    - check-artifacts-job
+  script:
+    - GIT_TAG=${CI_COMMIT_TAG#v}
+    - VERSION=${GIT_TAG%.*}
+    - RB_TAG=${GIT_TAG##*.}
+    - echo "Building VM template for version ${VERSION} and RidgeBot tag ${RB_TAG}..."
+    - ./src/packer_template/setup.sh centos_iso.pkr.hcl ${VERSION} ${RB_TAG}
+
+build-vm-job:
+  stage: vm
+  only:
+    - /^v\d+\.\d+\.\d+.rb\d+$/   # Only run for tags like v1.0.0.rb0
+  script:
+    - GIT_TAG=${CI_COMMIT_TAG#v}
+    - VERSION=${GIT_TAG%.*}
+    - RB_TAG=${GIT_TAG##*.}
+    - echo "Building VM for version ${VERSION} and RidgeBot tag ${RB_TAG}..."
+    - |
+      cd src/tf && \
+      make init-staging && \
+      make plan-staging && \
+      make apply-staging
 
