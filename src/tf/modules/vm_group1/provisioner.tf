@@ -43,6 +43,8 @@ locals {
 
 
 resource "terraform_data" "post_script" {
+  triggers_replace = [timestamp()]
+
   depends_on = [vsphere_virtual_machine.vm]
   for_each = vsphere_virtual_machine.vm
 
@@ -52,10 +54,24 @@ resource "terraform_data" "post_script" {
 
     connection{
       type     = "ssh"
-      user     = local.common_templatevars.ssh_username
-      password = local.common_templatevars.ssh_password
+      user     = "root"
+      private_key = file("~/.ssh/id_rsa")
       host     = each.value.default_ip_address
     }
+  }
+
+   # Reboot and wait for the OS to come back up
+  provisioner "local-exec" {
+    command = <<-EOT
+      ssh ${local.ssh_args} root@${each.value.default_ip_address} 'echo OK'||
+      (
+        echo "Rebooting VM ${each.value.name}..."
+        until ssh ${local.ssh_args} -o ConnectTimeout=2 root@${each.value.default_ip_address} true 2> /dev/null; do
+          sleep 3
+        done
+      )
+      sleep 3
+    EOT
   }
 
   # Waiting for services starting
@@ -64,19 +80,17 @@ resource "terraform_data" "post_script" {
 
     connection {
       type     = "ssh"
-      user     = local.common_templatevars.ssh_username_ridgebot
-      password = local.common_templatevars.ssh_password_ridgebot
+      user     = "root"
+      password = "PL<okm098...???"
       host     = each.value.default_ip_address
     }
   }
+  
   # Reboot and wait for the OS to come back up
   provisioner "local-exec" {
-    environment = {
-      SSHPASS = local.common_templatevars.ssh_password_ridgebot
-    }
     command = <<-EOT
-      sshpass -e ssh ${local.ssh_args} root@${each.value.default_ip_address} '(sleep 2; reboot)&'; sleep 3
-      until sshpass -e ssh ${local.ssh_args} -o ConnectTimeout=2 root@${each.value.default_ip_address} true 2> /dev/null
+      ssh ${local.ssh_args} root@${each.value.default_ip_address} '(sleep 2; reboot)&'; sleep 3
+      until ssh ${local.ssh_args} -o ConnectTimeout=2 root@${each.value.default_ip_address} true 2> /dev/null
       do
         echo "Waiting for OS to reboot and become available..."
         sleep 3
@@ -87,7 +101,7 @@ resource "terraform_data" "post_script" {
   # Login as manager created by botctl for post actions
   provisioner "remote-exec" {
     inline = [
-      "echo 'Running follow-up as manager'",
+      "echo 'Running follow-up as manager'"
       # Attempt to mimic interactive command if possible
     ]
 

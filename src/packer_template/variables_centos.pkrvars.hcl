@@ -31,7 +31,7 @@ vm_cpu_sockets = 8 # Number of CPU sockets
 vm_cpu_cores   = 2 # Cores per socket (total 2 vCPUs)
 
 # VM memory configuration
-vm_mem_size = 8192 # 8GB RAM allocated to the VM
+vm_mem_size = 32768 # 32GB RAM allocated to the VM
 
 # VM storage configuration
 vm_disk_size       = 204800 # 200GB disk size (in MB)

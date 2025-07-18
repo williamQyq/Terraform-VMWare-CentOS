@@ -12,7 +12,7 @@ This module automates the provisioning of virtual machines in vSphere environmen
 ## Structure
 
 ```bash
-terraform-packer-vsphere/
+src/
 ├── packer_template/ # Packer templates and scripts for VM image building
 ├── tf/ # Terraform modules and scripts for VM provisioning
 ```

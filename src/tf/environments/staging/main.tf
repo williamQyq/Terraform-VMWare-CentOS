@@ -76,7 +76,8 @@ module "vm_group1" {
 
   ssh_username = var.ssh_username # SSH username for the VMs
   ssh_password = var.ssh_password # SSH password for the VMs
-
+  public_key = var.public_key # SSH public key for the VMs
+  
   rb_version = var.rb_version # Version of RidgeBot to install
   rb_tag = var.rb_tag # Tag for RidgeBot
   vm-name-prefix = var.vm-name-prefix # Prefix for VM names

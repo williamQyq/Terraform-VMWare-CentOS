@@ -81,3 +81,5 @@ gpasswd -d root otpusers
 nmcli device disconnect ens192
 sleep 1
 nmcli device connect ens192
+sleep 1
+

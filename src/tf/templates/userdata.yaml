@@ -11,7 +11,7 @@
 ###############################################################################
 # Creates a user account with SSH access and sudo privileges
 users:
-  - name: ${ssh_username}  # Username from variables.tf
+  - name: root  # Username from variables.tf
     ssh-authorized-keys:   # SSH public keys for passwordless authentication
       - ssh-rsa ${public_key}  # SSH public key from variables.tf
     sudo: ['ALL=(ALL) NOPASSWD:ALL']  # Grant passwordless sudo access
@@ -23,6 +23,7 @@ users:
 ssh_pwauth: true
 
 disable_root: false
+
 
 ###############################################################################
 # PACKAGE INSTALLATION
