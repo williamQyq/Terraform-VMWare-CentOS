@@ -43,7 +43,6 @@ locals {
 
 
 resource "terraform_data" "post_script" {
-  triggers_replace = [timestamp()]
 
   depends_on = [vsphere_virtual_machine.vm]
   for_each = vsphere_virtual_machine.vm
