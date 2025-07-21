@@ -7,6 +7,7 @@ CHDIR := environments/staging
 LOG := ./log/terraform-debug-log.md
 
 init-staging:
+	mkdir -p ./log
 	cd $(CHDIR) && terraform init
 
 plan-staging: init-staging

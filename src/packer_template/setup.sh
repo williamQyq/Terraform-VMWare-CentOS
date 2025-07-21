@@ -58,6 +58,8 @@ packer init "$packer_file"
 # This starts the actual build process with detailed logging
 echo "Starting Packer build..."
 
+mkdir -p ./log
+
 timestamp=$(date +"%Y-%m-%d_%H-%M-%S")
 
 PACKER_LOG=1 \
