@@ -35,7 +35,7 @@ build-vm-template-job:
     - RB_TAG=${GIT_TAG##*.}
     - echo "Building VM template for version ${VERSION} and RidgeBot tag ${RB_TAG}..."
     - echo "PWD ===== ${CI_PROJECT_DIR}"
-    - echo "$PACKER_SECRET" > "$CI_PROJECT_DIR/src/packer_template/secret.pkrvars.hcl"
+    - echo "$PACKER_SECRET" > "$CI_PROJECT_DIR/src/packer_template/secrets.pkrvars.hcl"
     - |
       chmod +x ./src/packer_template/setup.sh
       ./src/packer_template/setup.sh centos_iso.pkr.hcl "${VERSION}" "${RB_TAG}"
