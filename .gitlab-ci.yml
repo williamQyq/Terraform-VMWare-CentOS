@@ -15,7 +15,7 @@ check-artifacts-job:       # This job runs in the build stage, which runs first.
     - RB_TAG=${GIT_TAG##*.}
     - echo "Checking artifacts if exists on IDC..."
     - |
-      if ! curl -fsSLI http://172.30.101.201:85/${VERSION}/v${VERSION}.${RB_TAG}/ >/dev/null; then
+      if ! curl -fsSLI "http://172.30.101.201:85/${VERSION}/v${VERSION}.${RB_TAG}/" >/dev/null; then
         echo "❌ IDC artifacts not found: ${VERSION} ${RB_TAG}";
         exit 1
       fi
@@ -34,7 +34,9 @@ build-vm-template-job:
     - VERSION=${GIT_TAG%.*}
     - RB_TAG=${GIT_TAG##*.}
     - echo "Building VM template for version ${VERSION} and RidgeBot tag ${RB_TAG}..."
-    - ./src/packer_template/setup.sh centos_iso.pkr.hcl ${VERSION} ${RB_TAG}
+    - |
+      chmod +x ./src/packer_template/setup.sh
+      ./src/packer_template/setup.sh centos_iso.pkr.hcl "${VERSION}" "${RB_TAG}"
 
 build-vm-job:
   stage: vm

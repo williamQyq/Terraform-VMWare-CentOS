@@ -318,14 +318,14 @@ source "vsphere-iso" "ubuntu-2404" {
   }
 
   # Installation media
-#   iso_url      = var.iso_url                                    # ISO URL
-#   iso_checksum = "${var.iso_checksum_type}:${var.iso_checksum}" # ISO checksum
+  iso_url      = var.iso_url                                    # ISO URL
+  iso_checksum = "${var.iso_checksum_type}:${var.iso_checksum}" # ISO checksum
 
   # Cloud-init configuration via CD-ROM
   # This creates a secondary CD-ROM with cloud-init data
   cd_files = [
     "./${var.http_directory}/meta-data", # Cloud-init metadata
-    "./${var.http_directory}/user-data"  # Cloud-init user data
+    "./${var.http_directory}/user-data-ubuntu"  # Cloud-init user data
   ]
   cd_label = "cidata" # Label for cloud-init CD-ROM
 

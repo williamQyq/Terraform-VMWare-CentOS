@@ -22,8 +22,8 @@ vm_name          = "Ubuntu-2404-Template" # Name of the template VM in vSphere
 vm_guest_os_type = "ubuntu64Guest"        # vSphere guest OS identifier for Ubuntu 64-bit
 
 # VM hardware version and firmware
-vm_version    = 19     # VM hardware version (14 is compatible with vSphere 6.7+)
-vm_firmware   = "bios"  # Using BIOS firmware for modern boot support
+vm_version    = 13     # VM hardware version (14 is compatible with vSphere 6.7+)
+vm_firmware   = "efi"  # Using EFI firmware for modern boot support
 vm_cdrom_type = "sata" # SATA CD-ROM type for better performance
 
 # VM CPU configuration
@@ -34,7 +34,7 @@ vm_cpu_cores   = 2 # Cores per socket (total 2 vCPUs)
 vm_mem_size = 32768 # 2GB RAM allocated to the VM
 
 # VM storage configuration
-vm_disk_size       = 51200 # 20GB disk size (in MB)
+vm_disk_size       = 51200 # 50GB disk size (in MB)
 thin_provision     = true  # Use thin provisioning to save storage space
 disk_eagerly_scrub = false # Don't eagerly scrub zeros (faster provisioning)
 
@@ -53,11 +53,7 @@ ssh_password = "admin" # Password for SSH access during build
 # Details about the installation media used to build the VM
 
 # ISO image information
-# iso_file          = "ubuntu-24.04.2-live-server-amd64.iso"                                   # Filename of the Ubuntu ISO
-# iso_checksum      = "d6dab0c3a657988501b4bd76f1297c053df710e06e0c3aece60dead24f270b4d"       # SHA256 checksum
-# iso_checksum_type = "sha256"                                                                 # Checksum type (SHA256)
-# iso_url           = "https://releases.ubuntu.com/24.04/ubuntu-24.04.2-live-server-amd64.iso" # Download URL
-iso_path = "[QCA-Testbed] Platform_ISO/CentOS-Stream-9-20250224.1-x86_64-dvd1.iso" # Datastore path to ISO
-
-rb_version = "5.5.0"
-rb_tag     = "dev1"
+iso_file          = "ubuntu-24.04.2-live-server-amd64.iso"                                   # Filename of the Ubuntu ISO
+iso_checksum      = "d6dab0c3a657988501b4bd76f1297c053df710e06e0c3aece60dead24f270b4d"       # SHA256 checksum
+iso_checksum_type = "sha256"                                                                 # Checksum type (SHA256)
+iso_url           = "https://releases.ubuntu.com/24.04/ubuntu-24.04.2-live-server-amd64.iso" # Download URL
