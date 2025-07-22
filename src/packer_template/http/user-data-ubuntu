@@ -38,6 +38,8 @@ autoinstall:
         - python3-pip         # Python package manager
         - jq                  # JSON processor
         - cloud-init          # Cloud instance initialization
+        - xorriso          # ISO image manipulation
+        - make                # Build automation tool
     
     # Network configuration
     # Configure the first network interface with DHCP
