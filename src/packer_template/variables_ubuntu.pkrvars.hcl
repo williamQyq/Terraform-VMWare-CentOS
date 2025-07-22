@@ -17,6 +17,8 @@ http_directory = "http" # Directory containing cloud-init files (user-data, meta
 ###############################################################################
 # These settings define the hardware and OS configuration for the template VM
 
+vcenter_datastore="QCA-Controller" # vSphere datastore where the VM will be stored
+
 # Basic VM identity
 vm_name          = "Ubuntu-2404-Template" # Name of the template VM in vSphere
 vm_guest_os_type = "ubuntu64Guest"        # vSphere guest OS identifier for Ubuntu 64-bit
