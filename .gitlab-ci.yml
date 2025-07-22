@@ -1,6 +1,7 @@
 stages:          # List of stages for jobs, and their order of execution
   - idc
   - template
+  - cleanup
   - vm
 
 check-artifacts-job:       # This job runs in the build stage, which runs first.
@@ -41,6 +42,26 @@ build-vm-template-job:
     - |
       chmod +x ./src/packer_template/setup.sh
       ./src/packer_template/setup.sh centos_iso.pkr.hcl "${VERSION}" "${RB_TAG}"
+
+cleanup-vm-job:
+  stage: cleanup
+  tags:
+    - vsphere-runner-ubuntu-242
+
+  only:
+    - /^v\d+\.\d+\.\d+.rb\d+$/   # Only run for tags like v1.0.0.rb0
+  script:
+    - GIT_TAG=${CI_COMMIT_TAG#v}
+    - VERSION=${GIT_TAG%.*}
+    - RB_TAG=${GIT_TAG##*.}
+    - echo "Cleaning up VM for version ${VERSION} and RidgeBot tag ${RB_TAG}..."
+    - echo "PWD ===== ${CI_PROJECT_DIR}"
+    - cp "$VSPHERE_240" "$CI_PROJECT_DIR/src/tf/vsphere_240.tfvars"
+    - cp "$VSPHERE_242" "$CI_PROJECT_DIR/src/tf/vsphere_242.tfvars"
+    - |
+      cd src/tf && \
+      make init-staging && \
+      make destroy-staging
 
 build-vm-job:
   stage: vm
