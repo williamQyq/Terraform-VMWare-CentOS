@@ -6,7 +6,8 @@ stages:          # List of stages for jobs, and their order of execution
 check-artifacts-job:       # This job runs in the build stage, which runs first.
   stage: idc
   tags:
-    - vsphere-runner-macos
+    - vsphere-runner-ubuntu-242
+
   only:
     - /^v\d+\.\d+\.\d+.rb\d+$/   # Only run for tags like v1.0.0.rb0
   script:
@@ -24,7 +25,8 @@ check-artifacts-job:       # This job runs in the build stage, which runs first.
 build-vm-template-job:
   stage: template
   tags:
-    - vsphere-runner-macos
+    - vsphere-runner-ubuntu-242
+
   only:
     - /^v\d+\.\d+\.\d+.rb\d+$/   # Only run for tags like v1.0.0.rb0
   needs:
@@ -42,8 +44,10 @@ build-vm-template-job:
 
 build-vm-job:
   stage: vm
+  timeout: 3h
   tags:
-    - vsphere-runner-macos
+    - vsphere-runner-ubuntu-242
+
   only:
     - /^v\d+\.\d+\.\d+.rb\d+$/   # Only run for tags like v1.0.0.rb0
   script:
