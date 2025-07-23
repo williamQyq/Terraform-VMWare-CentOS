@@ -20,8 +20,8 @@ ipv4_gateway           = "172.16.101.1"
 ipv4_netmask           = "24"
 vsphere-template-folder = "willqiao-vm"
 
-rb_version            = "546" # Specify the version of RidgeBot to install
-rb_tag              = "rb1" # Specify the tag for RidgeBot
+rb_version            = "546" # auto get from gitlab tag, Specify the version of RidgeBot to install
+rb_tag              = "rb1" # auto get from gitlab tag, Specify the tag for RidgeBot
 vm-name-prefix = "centos9" # Specify Name user and os version
 
 vm-template-name       = "centos-rb-5.4.6-rb1-vm-template"

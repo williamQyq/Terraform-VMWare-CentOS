@@ -22,12 +22,16 @@ plan-staging: init-staging
 	terraform -chdir=$(CHDIR) plan \
 		-var-file=$(FILE) \
 		-var-file=$(GROUP) \
+		-var="rb_version=$(RB_VERSION)" \
+		-var="rb_tag=$(RB_TAG)" \
 		-out=$(PLAN)
 
 apply-staging: plan-staging
 	terraform -chdir=$(CHDIR) apply \
 		-var-file=$(FILE) \
 		-var-file=$(GROUP) \
+		-var="rb_version=$(RB_VERSION)" \
+		-var="rb_tag=$(RB_TAG)" \
 		-auto-approve \
 		$(PLAN)
 

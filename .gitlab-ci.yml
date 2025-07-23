@@ -1,3 +1,8 @@
+variables:
+  - GIT_TAG=${CI_COMMIT_TAG#v}
+  - RB_VERSION=${GIT_TAG%.*}
+  - RB_TAG=${GIT_TAG##*.}
+
 stages:          # List of stages for jobs, and their order of execution
   - idc
   - template
@@ -12,16 +17,13 @@ check-artifacts-job:       # This job runs in the build stage, which runs first.
   only:
     - /^v\d+\.\d+\.\d+.rb\d+$/   # Only run for tags like v1.0.0.rb0
   script:
-    - GIT_TAG=${CI_COMMIT_TAG#v}
-    - VERSION=${GIT_TAG%.*}
-    - RB_TAG=${GIT_TAG##*.}
     - echo "Checking artifacts if exists on IDC..."
     - |
-      if ! curl -fsSLI "http://172.30.101.201:85/${VERSION}/v${VERSION}.${RB_TAG}/" >/dev/null; then
-        echo "❌ IDC artifacts not found: ${VERSION} ${RB_TAG}";
+      if ! curl -fsSLI "http://172.30.101.201:85/${RB_VERSION}/v${RB_VERSION}.${RB_TAG}/" >/dev/null; then
+        echo "❌ IDC artifacts not found: ${RB_VERSION} ${RB_TAG}";
         exit 1
       fi
-      echo "✅ IDC artifacts ${VERSION} ${RB_TAG} exist";
+      echo "✅ IDC artifacts ${RB_VERSION} ${RB_TAG} exist";
 
 build-vm-template-job:
   stage: template
@@ -33,15 +35,12 @@ build-vm-template-job:
   needs:
     - check-artifacts-job
   script:
-    - GIT_TAG=${CI_COMMIT_TAG#v}
-    - VERSION=${GIT_TAG%.*}
-    - RB_TAG=${GIT_TAG##*.}
-    - echo "Building VM template for version ${VERSION} and RidgeBot tag ${RB_TAG}..."
+    - echo "Building VM template for version ${RB_VERSION} and RidgeBot tag ${RB_TAG}..."
     - echo "PWD ===== ${CI_PROJECT_DIR}"
     - cp "$PACKER_SECRET" "$CI_PROJECT_DIR/src/packer_template/secrets.pkrvars.hcl"
     - |
       chmod +x ./src/packer_template/setup.sh
-      ./src/packer_template/setup.sh centos_iso.pkr.hcl "${VERSION}" "${RB_TAG}"
+      ./src/packer_template/setup.sh centos_iso.pkr.hcl "${RB_VERSION}" "${RB_TAG}"
 
 cleanup-vm-job:
   stage: cleanup
@@ -51,10 +50,7 @@ cleanup-vm-job:
   only:
     - /^v\d+\.\d+\.\d+.rb\d+$/   # Only run for tags like v1.0.0.rb0
   script:
-    - GIT_TAG=${CI_COMMIT_TAG#v}
-    - VERSION=${GIT_TAG%.*}
-    - RB_TAG=${GIT_TAG##*.}
-    - echo "Cleaning up VM for version ${VERSION} and RidgeBot tag ${RB_TAG}..."
+    - echo "Cleaning up VM for version ${RB_VERSION} and RidgeBot tag ${RB_TAG}..."
     - echo "PWD ===== ${CI_PROJECT_DIR}"
     - cp "$VSPHERE_240" "$CI_PROJECT_DIR/src/tf/vsphere_240.tfvars"
     - cp "$VSPHERE_242" "$CI_PROJECT_DIR/src/tf/vsphere_242.tfvars"
@@ -72,9 +68,6 @@ build-vm-job:
   only:
     - /^v\d+\.\d+\.\d+.rb\d+$/   # Only run for tags like v1.0.0.rb0
   script:
-    - GIT_TAG=${CI_COMMIT_TAG#v}
-    - VERSION=${GIT_TAG%.*}
-    - RB_TAG=${GIT_TAG##*.}
     - echo "Building VM for version ${VERSION} and RidgeBot tag ${RB_TAG}..."
     - echo "PWD ===== ${CI_PROJECT_DIR}"
     - cp "$VSPHERE_240" "$CI_PROJECT_DIR/src/tf/vsphere_240.tfvars"
@@ -82,6 +75,6 @@ build-vm-job:
     - |
       cd src/tf && \
       make init-staging && \
-      make plan-staging && \
-      make apply-staging
+      make plan-staging RB_VERSION=${RB_VERSION} RB_TAG=${RB_TAG} && \
+      make apply-staging RB_VERSION=${RB_VERSION} RB_TAG=${RB_TAG}
 
