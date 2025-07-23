@@ -47,8 +47,8 @@ setup.sh centos_iso.pkr.hcl {RB_VERSION} {RB_TAG} #or use your *.pkr.hcl
 
 # Provision for 242 vSphere
 make init-staging
-make plan-staging
-make apply-staging
+make plan-staging RB_VERSION=${RB_VERSION} RB_TAG=${RB_TAG} && \
+make apply-staging RB_VERSION=${RB_VERSION} RB_TAG=${RB_TAG}
 ```
 
 ## Logs
