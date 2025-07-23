@@ -8,15 +8,15 @@ terraform {
       version = "2.14.0"
     }
   }
-  # backend "http" {
-  #   address        = "https://gitt.ridgesecurity.ai/api/v4/projects/61/terraform/state/default"
-  #   lock_address   = "https://gitt.ridgesecurity.ai/api/v4/projects/61/terraform/state/default/lock"
-  #   unlock_address = "https://gitt.ridgesecurity.ai/api/v4/projects/61/terraform/state/default/lock"
-  #   lock_method    = "POST"
-  #   unlock_method  = "DELETE"
-  #   username       = ""
-  #   password       = ""  # Set via TF_HTTP_PASSWORD (CI_JOB_TOKEN)
-  # }
+  backend "http" {
+    address        = "https://gitt.ridgesecurity.ai/api/v4/projects/61/terraform/state/default"
+    lock_address   = "https://gitt.ridgesecurity.ai/api/v4/projects/61/terraform/state/default/lock"
+    unlock_address = "https://gitt.ridgesecurity.ai/api/v4/projects/61/terraform/state/default/lock"
+    lock_method    = "POST"
+    unlock_method  = "DELETE"
+    username       = ""
+    password       = ""  # Set via TF_HTTP_PASSWORD (CI_JOB_TOKEN)
+  }
 }
 
 
