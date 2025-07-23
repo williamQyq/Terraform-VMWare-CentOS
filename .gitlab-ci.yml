@@ -1,6 +1,3 @@
-variables:
-  TF_HTTP_PASSWORD: $CI_JOB_TOKEN  # Used for Terraform HTTP backend authentication
-
 stages:          # List of stages for jobs, and their order of execution
   - idc
   - template
