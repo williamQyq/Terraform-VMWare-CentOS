@@ -8,10 +8,10 @@ LOG := ./log/terraform-debug-log.md
 
 init-staging:
 	mkdir -p ./log
-	cd $(CHDIR) && terraform init
+	terraform -chdir=$(CHDIR) init
 
 plan-staging: init-staging
-	cd $(CHDIR) && terraform plan \
+	terraform -chdir=$(CHDIR) plan \
 		-var-file=$(FILE) \
 		-var-file=$(GROUP) \
 		-out=$(PLAN)
