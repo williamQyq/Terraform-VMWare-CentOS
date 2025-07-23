@@ -8,12 +8,12 @@ LOG := ./log/terraform-debug-log.md
 
 init-staging:
 	mkdir -p ./log
-	@GITLAB_ACCESS_TOKEN=glpat-GJsLvjTQaEziDCqo_mEL TF_STATE_NAME=default terraform -chdir=$(CHDIR) init -reconfigure \
+	@TF_STATE_NAME=default terraform -chdir=$(CHDIR) init -reconfigure \
 		-backend-config="address=https://gitt.ridgesecurity.ai/api/v4/projects/61/terraform/state/$TF_STATE_NAME" \
 		-backend-config="lock_address=https://gitt.ridgesecurity.ai/api/v4/projects/61/terraform/state/$TF_STATE_NAME/lock" \
 		-backend-config="unlock_address=https://gitt.ridgesecurity.ai/api/v4/projects/61/terraform/state/$TF_STATE_NAME/lock" \
-		-backend-config="username=william.qiao" \
-		-backend-config="password=$${GITLAB_ACCESS_TOKEN}" \
+		-backend-config="username=gitlab-ci-token" \
+		-backend-config="password=$${CI_JOB_TOKEN}" \
 		-backend-config="lock_method=POST" \
 		-backend-config="unlock_method=DELETE" \
 		-backend-config="retry_wait_min=5"

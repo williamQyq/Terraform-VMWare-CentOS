@@ -51,7 +51,7 @@ for file in "${FILE_LIST[@]}"; do
   echo "Downloading: ${FILE_URL}"
   if wget --spider -q "${FILE_URL}"; then
   echo "✔ Remote file exists. Downloading..."
-  wget -q --progress=dot:giga -O "${DEST_FILE}" "${FILE_URL}" \
+  wget --progress=dot:giga -O "${DEST_FILE}" "${FILE_URL}" \
     && echo "✔ Saved to ${DEST_FILE}" \
     || echo "✖ Failed to download ${file} from ${FILE_URL}" >&2
   else
