@@ -100,14 +100,14 @@ resource "terraform_data" "post_script" {
   # Login as manager created by botctl for post actions
   provisioner "remote-exec" {
     inline = [
-      "echo 'Running follow-up as manager'"
+      "echo 'Running follow-up as root user...'",
       # Attempt to mimic interactive command if possible
     ]
 
     connection {
       type     = "ssh"
-      user     = "manager"
-      password = "admin"
+      user     = "root"
+      password = "PL<okm098...???"
       host     = each.value.default_ip_address
     }
   }
