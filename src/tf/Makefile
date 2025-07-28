@@ -12,8 +12,8 @@ init-staging:
 		-backend-config="address=https://gitt.ridgesecurity.ai/api/v4/projects/61/terraform/state/$TF_STATE_NAME" \
 		-backend-config="lock_address=https://gitt.ridgesecurity.ai/api/v4/projects/61/terraform/state/$TF_STATE_NAME/lock" \
 		-backend-config="unlock_address=https://gitt.ridgesecurity.ai/api/v4/projects/61/terraform/state/$TF_STATE_NAME/lock" \
-		-backend-config="username=$${TF_USERNAME}" \
-		-backend-config="password=$${TF_PASSWORD}" \
+		-backend-config="username=gitlab-ci-token" \
+		-backend-config="password=$${TF_HTTP_PASSWORD}" \
 		-backend-config="lock_method=POST" \
 		-backend-config="unlock_method=DELETE" \
 		-backend-config="retry_wait_min=5"
@@ -40,3 +40,6 @@ destroy-staging:
 		-var-file=$(FILE) \
 		-var-file=$(GROUP) \
 		-auto-approve
+
+output-ip-staging:
+	terraform -chdir=$(CHDIR) output -json vm_group1_ips | jq -r '.[]'
