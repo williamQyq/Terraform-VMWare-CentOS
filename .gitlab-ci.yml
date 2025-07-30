@@ -92,4 +92,5 @@ output-vm-ip-job:
     - echo "Outputting VM IP for version ${RB_VERSION} and RidgeBot tag ${RB_TAG}..."
     - |
       cd src/tf && \
+      make init-staging && \
       make output-ip-staging
