@@ -39,6 +39,8 @@ destroy-staging:
 	terraform -chdir=$(CHDIR) destroy \
 		-var-file=$(FILE) \
 		-var-file=$(GROUP) \
+		-var="rb_version=$(RB_VERSION)" \
+		-var="rb_tag=$(RB_TAG)" \
 		-auto-approve
 
 output-ip-staging:

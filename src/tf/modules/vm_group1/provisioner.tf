@@ -101,6 +101,7 @@ resource "terraform_data" "post_script" {
   provisioner "remote-exec" {
     inline = [
       "echo 'Finished follow-up as root user...'",
+      "touch /opt/aibot/config/ignore_login_captcha"
       # Attempt to mimic interactive command if possible
     ]
 
