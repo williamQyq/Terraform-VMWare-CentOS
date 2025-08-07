@@ -136,21 +136,16 @@ variable "vm-guest-id" {
   # The vSphere guest ID that identifies the operating system (e.g., "ubuntu64Guest")
 }
 
-variable "vm-template-name" {
-  type        = string
-  description = "The template to clone to create the VM"
-  # The name of the template from which VMs will be cloned
-}
 variable "rb_version" {
   type        = string
   description = "The version of RidgeBot to install"
-  default     = "latest"
+  default     = "v@latest"
   # The version of RidgeBot to be installed on the VMs
 }
 variable "rb_tag" {
   type        = string
   description = "The tag for RidgeBot"
-  default     = "latest"
+  default     = "rb-latest"
   # The tag for RidgeBot to be installed on the VMs
 }
 

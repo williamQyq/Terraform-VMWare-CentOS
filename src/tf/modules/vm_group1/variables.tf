@@ -141,12 +141,6 @@ variable "vm-guest-id" {
   # The vSphere guest ID that identifies the operating system (e.g., "ubuntu64Guest")
 }
 
-variable "vm-template-name" {
-  type        = string
-  description = "The template to clone to create the VM"
-  # The name of the template from which VMs will be cloned
-}
-
 variable "vm-domain" {
   type        = string
   description = "Linux virtual machine domain name for the machine. This, along with host_name, make up the FQDN of the virtual machine"

@@ -35,7 +35,7 @@ data "vsphere_network" "network" {
 # Get information about the template that will be used to create VMs
 data "vsphere_virtual_machine" "template" {
   provider = vsphere.vsphere242
-  name          = "${var.vm-template-name}"
+  name          = "centos-rb-${var.rb_version}-${var.rb_tag}-vm-template"
   datacenter_id = data.vsphere_datacenter.dc.id # Reference to the datacenter above
 }
 ###############################################################################
@@ -66,7 +66,6 @@ module "vm_group1" {
  
   # Template configuration
   template_uuid = data.vsphere_virtual_machine.template.id # Template UUID from data source
-  vm-template-name = var.vm-template-name # Name of the template to clone
   folder = "/${var.vsphere-datacenter}/vm/${var.vsphere-template-folder}/" # The template folder
 
   # Hardware configuration

@@ -20,8 +20,7 @@ ipv4_gateway           = "172.16.101.1"
 ipv4_netmask           = "24"
 vsphere-template-folder = "williamqiao_vm_template"
 
-vm-template-name       = "centos-rb-${rb_version}-${rb_tag}-vm-template"
-rb_version            = "latest" # Specify the version of RidgeBot to install
-rb_tag              = "latest" # Specify the tag for RidgeBot
+# rb_version            = "latest" # Specify the version of RidgeBot to install
+# rb_tag              = "latest" # Specify the tag for RidgeBot
 # Note: The specific VM names and IP addresses are defined in the locals block
 # in variables.tf using the for_each configuration
