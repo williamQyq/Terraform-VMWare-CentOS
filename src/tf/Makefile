@@ -26,7 +26,7 @@ plan-staging: init-staging
 		-var="rb_tag=$(RB_TAG)" \
 		-out=$(PLAN)
 
-apply-staging: plan-staging
+apply-staging: init-staging
 	terraform -chdir=$(CHDIR) apply \
 		-var-file=$(FILE) \
 		-var-file=$(GROUP) \
@@ -35,7 +35,7 @@ apply-staging: plan-staging
 		-auto-approve \
 		$(PLAN)
 
-destroy-staging:
+destroy-staging: init-staging
 	terraform -chdir=$(CHDIR) destroy \
 		-var-file=$(FILE) \
 		-var-file=$(GROUP) \

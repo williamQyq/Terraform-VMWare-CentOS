@@ -13,7 +13,7 @@
 users:
   - name: root  # Username from variables.tf
     ssh-authorized-keys:   # SSH public keys for passwordless authentication
-      - ssh-rsa ${public_key}  # SSH public key from variables.tf
+      - ${public_key}  # SSH public key from variables.tf
     sudo: ['ALL=(ALL) NOPASSWD:ALL']  # Grant passwordless sudo access
     groups: sudo  # Add user to sudo group
     shell: /bin/bash  # Default shell for the user

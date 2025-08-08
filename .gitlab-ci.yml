@@ -58,7 +58,7 @@ cleanup-vm-job:
     - |
       cd src/tf && \
       make init-staging && \
-      make destroy-staging
+      make destroy-staging RB_VERSION=${RB_VERSION} RB_TAG=${RB_TAG}
 
 build-vm-job:
   stage: vm
@@ -79,18 +79,22 @@ build-vm-job:
       make plan-staging RB_VERSION=${RB_VERSION} RB_TAG=${RB_TAG} && \
       make apply-staging RB_VERSION=${RB_VERSION} RB_TAG=${RB_TAG}
 
-output-vm-ip-job:
-  stage: ip
-  tags:
-    - vsphere-runner-ubuntu-242
-
-  only:
-    - /^v\d+\.\d+\.\d+.rb\d+$/   # Only run for tags like v1.0.0.rb0
-  needs:
-    - build-vm-job
-  script:
-    - echo "Outputting VM IP for version ${RB_VERSION} and RidgeBot tag ${RB_TAG}..."
-    - |
-      cd src/tf && \
-      make init-staging && \
-      make output-ip-staging
+#trigger-playwright-ui-test-job:
+#  stage: ip
+#  tags:
+#    - vsphere-runner-ubuntu-242
+#
+#  only:
+#    - /^v\d+\.\d+\.\d+.rb\d+$/   # Only run for tags like v1.0.0.rb0
+#  needs:
+#    - build-vm-job
+#  script:
+#    - echo "Trigger E2E test on Outputting VM IP for version ${RB_VERSION} and RidgeBot tag ${RB_TAG}..."
+#    - |
+#      cd src/tf && \
+#      make init-staging && \
+#      IP_JSON=$(make output-ip-staging | awk 'NF' | jq -R . | jq -s -c .)
+#      curl -sS -X POST https://gitlab.com/api/v4/projects/62/trigger/pipeline \
+#        --form "token=$TRIGGER_TOKEN_E2E" \
+#        --form "ref=main" \
+#        --form "variables[VM_IPS_JSON]=$IP_JSON"
