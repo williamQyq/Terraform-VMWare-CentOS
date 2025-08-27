@@ -93,8 +93,13 @@ build-vm-job:
 #    - |
 #      cd src/tf && \
 #      make init-staging && \
-#      IP_JSON=$(make output-ip-staging | awk 'NF' | jq -R . | jq -s -c .)
-#      curl -sS -X POST https://gitlab.com/api/v4/projects/62/trigger/pipeline \
-#        --form "token=$TRIGGER_TOKEN_E2E" \
-#        --form "ref=main" \
-#        --form "variables[VM_IPS_JSON]=$IP_JSON"
+#      IPS=($(make output-ip-staging | awk 'NF'))
+#      IP1 = ${IPS[0]} #VM1 ip
+#      IP2 = ${IPS[1]} #VM2 ip
+#
+#      curl -X POST \
+#      -F token="${TRIGGER_TOKEN_E2E}" \
+#      -F ref='dev/will' \
+#      -F "variables[RIDGEBOT_IP1]=$IP1" \
+#      -F "variables[RIDGEBOT_IP2]=$IP2" \
+#      https://gitt.ridgesecurity.ai/api/v4/projects/62/trigger/pipeline
