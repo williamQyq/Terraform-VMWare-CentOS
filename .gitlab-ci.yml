@@ -79,27 +79,27 @@ build-vm-job:
       make plan-staging RB_VERSION=${RB_VERSION} RB_TAG=${RB_TAG} && \
       make apply-staging RB_VERSION=${RB_VERSION} RB_TAG=${RB_TAG}
 
-#trigger-playwright-ui-test-job:
-#  stage: ip
-#  tags:
-#    - vsphere-runner-ubuntu-242
-#
-#  only:
-#    - /^v\d+\.\d+\.\d+.rb\d+$/   # Only run for tags like v1.0.0.rb0
-#  needs:
-#    - build-vm-job
-#  script:
-#    - echo "Trigger E2E test on Outputting VM IP for version ${RB_VERSION} and RidgeBot tag ${RB_TAG}..."
-#    - |
-#      cd src/tf && \
-#      make init-staging && \
-#      IPS=($(make output-ip-staging | awk 'NF'))
-#      IP1 = ${IPS[0]} #VM1 ip
-#      IP2 = ${IPS[1]} #VM2 ip
-#
-#      curl -X POST \
-#      -F token="${TRIGGER_TOKEN_E2E}" \
-#      -F ref='dev/will' \
-#      -F "variables[RIDGEBOT_IP1]=$IP1" \
-#      -F "variables[RIDGEBOT_IP2]=$IP2" \
-#      https://gitt.ridgesecurity.ai/api/v4/projects/62/trigger/pipeline
+trigger-playwright-ui-test-job:
+  stage: ip
+  tags:
+    - vsphere-runner-ubuntu-242
+
+  only:
+    - /^v\d+\.\d+\.\d+.rb\d+$/   # Only run for tags like v1.0.0.rb0
+  needs:
+    - build-vm-job
+  script:
+    - echo "Trigger E2E test on Outputting VM IP for version ${RB_VERSION} and RidgeBot tag ${RB_TAG}..."
+    - |
+      cd src/tf && \
+      make init-staging && \
+      IPS=($(make output-ip-staging | awk 'NF'))
+      IP1 = ${IPS[0]} #VM1 ip
+      IP2 = ${IPS[1]} #VM2 ip
+
+      curl -X POST \
+      -F token="${TRIGGER_TOKEN_E2E}" \
+      -F ref='dev/will' \
+      -F "variables[RIDGEBOT_IP1]=$IP1" \
+      -F "variables[RIDGEBOT_IP2]=$IP2" \
+      https://gitt.ridgesecurity.ai/api/v4/projects/62/trigger/pipeline
