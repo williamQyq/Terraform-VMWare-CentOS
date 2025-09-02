@@ -93,7 +93,7 @@ trigger-playwright-ui-test-job:
     - |
       cd src/tf && \
       make init-staging && \
-      IPS=($(make output-ip-staging | awk 'NF'))
+      IPS=($(make -s output-ip-staging))
       IP1=${IPS[0]} #VM1 ip
       IP2=${IPS[1]} #VM2 ip
 
