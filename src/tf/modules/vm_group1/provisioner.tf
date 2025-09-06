@@ -9,14 +9,28 @@ locals {
   # Define multiple VMs with their specific configurations
   vms = {
     "vm1" = {
-      name         = "${var.vm-name-prefix}-${var.rb_version}-${var.rb_tag}-vm1" # Name of the first VM
+      name         = "${var.vm-name-prefix}-${var.rb_version}-${var.rb_tag}-vvm1" # Name of the first VM
 #       ipv4_address = "192.168.1.97"    # Static IP address for the first VM
       cpu          = var.cpu           # Use the default CPU count
       ram          = var.ram           # Use the default RAM amount
       disksize     = var.disksize      # Use the default disk size
     },
     "vm2" = {
-      name         = "${var.vm-name-prefix}-${var.rb_version}-${var.rb_tag}-vm2" # Name of the second VM
+      name         = "${var.vm-name-prefix}-${var.rb_version}-${var.rb_tag}-vvm2" # Name of the second VM
+#       ipv4_address = "192.168.1.98"    # Static IP address for the second VM
+      cpu          = var.cpu           # Use the default CPU count
+      ram          = var.ram           # Use the default RAM amount
+      disksize     = var.disksize      # Use the default disk size
+    },
+    "vm3" = {
+      name         = "${var.vm-name-prefix}-${var.rb_version}-${var.rb_tag}-vvm3" # Name of the second VM
+#       ipv4_address = "192.168.1.98"    # Static IP address for the second VM
+      cpu          = var.cpu           # Use the default CPU count
+      ram          = var.ram           # Use the default RAM amount
+      disksize     = var.disksize      # Use the default disk size
+    },
+    "vm4" = {
+      name         = "${var.vm-name-prefix}-${var.rb_version}-${var.rb_tag}-vvm4" # Name of the second VM
 #       ipv4_address = "192.168.1.98"    # Static IP address for the second VM
       cpu          = var.cpu           # Use the default CPU count
       ram          = var.ram           # Use the default RAM amount

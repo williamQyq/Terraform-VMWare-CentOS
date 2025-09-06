@@ -5,8 +5,8 @@ GROUP := ../../group242.tfvars
 PLAN := staging.plan
 CHDIR := environments/staging
 LOG := ./log/terraform-debug-log.md
-TF_STATE_NAME ?= default
-
+#TF_STATE_NAME ?= default
+TF_STATE_NAME ?= dev
 #TF_HTTP_PASSWORD is Project Access Token which allow user to create tf state on gitlab
 
 init-staging:
@@ -45,6 +45,7 @@ destroy-staging: init-staging
 output-ip-staging:
 	terraform -chdir=$(CHDIR) output -json vm_group1_ips | jq -r '.[]'
 
+#Trigger the Gitlab CI by re-tagging.
 retag:
 	git tag -d v$(RB_VERSION).$(RB_TAG) || true
 	git push origin :refs/tags/v$(RB_VERSION).$(RB_TAG) || true

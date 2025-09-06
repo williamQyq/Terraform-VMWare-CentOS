@@ -94,12 +94,16 @@ trigger-playwright-ui-test-job:
       cd src/tf && \
       make init-staging && \
       IPS=($(make -s output-ip-staging))
-      IP1=${IPS[0]} #VM1 ip
-      IP2=${IPS[1]} #VM2 ip
 
+#     Create list of variable ips for provisioned vm e.g."variables[RIDGEBOT_IP1]=$IP1"
+      VM_IPS=()
+      for i in "${!IPS[@]}"; do
+        idx=$((i+1))
+        VM_IPS+=(-F "variables[RIDGEBOT_IP$idx]=${IPS[$i]}")
+      done
+    
       curl -X POST \
       -F token="${TRIGGER_TOKEN_E2E}" \
       -F ref='dev/will' \
-      -F "variables[RIDGEBOT_IP1]=$IP1" \
-      -F "variables[RIDGEBOT_IP2]=$IP2" \
+      "${VM_IPS[@]}" \
       https://gitt.ridgesecurity.ai/api/v4/projects/62/trigger/pipeline

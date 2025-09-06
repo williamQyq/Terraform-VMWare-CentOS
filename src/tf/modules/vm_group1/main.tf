@@ -37,6 +37,7 @@ resource "vsphere_virtual_machine" "vm" {
   # Clone from template
   clone {
     template_uuid = var.template_uuid # Template UUID from data source
+    timeout="90" # Time out wait for 90 mins to clone
   }
 
   # Cloud-init configuration for first-boot customization
@@ -70,4 +71,5 @@ resource "vsphere_virtual_machine" "vm" {
   # Firmware configuration
   firmware                = "efi" # Use EFI firmware instead of BIOS
   efi_secure_boot_enabled = false # Disable secure boot for compatibility
+
 }
