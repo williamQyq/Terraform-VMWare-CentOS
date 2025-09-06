@@ -37,7 +37,7 @@ resource "vsphere_virtual_machine" "vm" {
   # Clone from template
   clone {
     template_uuid = var.template_uuid # Template UUID from data source
-    timeout="90" # Time out wait for 90 mins to clone
+    timeout="360" # Time out wait for 360 mins to clone
   }
 
   # Cloud-init configuration for first-boot customization

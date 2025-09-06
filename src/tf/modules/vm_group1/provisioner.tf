@@ -28,13 +28,6 @@ locals {
       cpu          = var.cpu           # Use the default CPU count
       ram          = var.ram           # Use the default RAM amount
       disksize     = var.disksize      # Use the default disk size
-    },
-    "vm4" = {
-      name         = "${var.vm-name-prefix}-${var.rb_version}-${var.rb_tag}-vvm4" # Name of the second VM
-#       ipv4_address = "192.168.1.98"    # Static IP address for the second VM
-      cpu          = var.cpu           # Use the default CPU count
-      ram          = var.ram           # Use the default RAM amount
-      disksize     = var.disksize      # Use the default disk size
     }
     # Add more VMs as needed by adding more entries to this map
   }
