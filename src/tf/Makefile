@@ -6,7 +6,9 @@ PLAN := staging.plan
 CHDIR := environments/staging
 LOG := ./log/terraform-debug-log.md
 #TF_STATE_NAME ?= default
-TF_STATE_NAME ?= dev
+#TF_STATE_NAME ?= dev
+TF_STATE_NAME ?= dev0908
+
 #TF_HTTP_PASSWORD is Project Access Token which allow user to create tf state on gitlab
 
 init-staging:
