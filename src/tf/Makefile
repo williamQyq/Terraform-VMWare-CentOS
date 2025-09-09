@@ -1,4 +1,10 @@
-.PHONY: init-staging plan-staging apply-staging destroy-staging
+.PHONY: \
+	init-staging \
+	plan-staging \
+	apply-staging \
+	destroy-staging \
+	output-ip-staging \
+	clean-vm
 
 FILE := ../../vsphere_242.tfvars
 GROUP := ../../group242.tfvars
@@ -6,8 +12,8 @@ PLAN := staging.plan
 CHDIR := environments/staging
 LOG := ./log/terraform-debug-log.md
 #TF_STATE_NAME ?= default
-#TF_STATE_NAME ?= dev
-TF_STATE_NAME ?= dev0908
+TF_STATE_NAME ?= dev
+#TF_STATE_NAME ?= dev0908
 
 #TF_HTTP_PASSWORD is Project Access Token which allow user to create tf state on gitlab
 
@@ -52,3 +58,6 @@ retag:
 	git push origin :refs/tags/v$(RB_VERSION).$(RB_TAG) || true
 	git tag v$(RB_VERSION).$(RB_TAG)
 	git push origin v$(RB_VERSION).$(RB_TAG)
+
+clean-vm:
+	sh clean-vm.sh $(RB_VERSION) $(RB_TAG)
