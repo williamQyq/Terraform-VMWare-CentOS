@@ -13,7 +13,7 @@ output "ip_addresses" {
   # - The key is the VM key from the for_each (e.g., "vm1", "vm2")
   # - The value is the first IP address assigned to the VM
   value = {
-    for k, v in vsphere_virtual_machine.vm : k => v.guest_ip_addresses[0]
+    for k, v in vsphere_virtual_machine.vm : k => try(v.guest_ip_addresses[0],null)
   }
   # Example output:
   # ip_addresses = {

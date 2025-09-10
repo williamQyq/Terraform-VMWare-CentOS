@@ -11,9 +11,8 @@ GROUP := ../../group242.tfvars
 PLAN := staging.plan
 CHDIR := environments/staging
 LOG := ./log/terraform-debug-log.md
-#TF_STATE_NAME ?= default
-TF_STATE_NAME ?= dev
-#TF_STATE_NAME ?= dev0908
+TF_STATE_NAME ?= default
+#TF_STATE_NAME ?= dev
 
 #TF_HTTP_PASSWORD is Project Access Token which allow user to create tf state on gitlab
 
@@ -44,6 +43,7 @@ apply-staging: plan-staging
 
 destroy-staging: init-staging
 	terraform -chdir=$(CHDIR) destroy \
+		-refresh=false \
 		-var-file=$(FILE) \
 		-var-file=$(GROUP) \
 		-var="rb_version=$(RB_VERSION)" \
