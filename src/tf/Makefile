@@ -34,7 +34,7 @@ plan-staging: init-staging
 		-var-file=$(GROUP) \
 		-var="rb_version=$(RB_VERSION)" \
 		-var="rb_tag=$(RB_TAG)" \
-		-target=module.vm_group2 \
+		-target=module.vm_group1 \
 		-out=$(PLAN)
 
 apply-staging: plan-staging
