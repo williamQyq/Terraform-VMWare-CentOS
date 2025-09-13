@@ -104,6 +104,6 @@ trigger-playwright-ui-test-job:
     
       curl -X POST \
       -F token="${TRIGGER_TOKEN_E2E}" \
-      -F ref='dev/will' \
+      -F ref='main' \
       "${VM_IPS[@]}" \
       https://gitt.ridgesecurity.ai/api/v4/projects/62/trigger/pipeline
