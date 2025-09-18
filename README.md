@@ -1,4 +1,4 @@
-# Terraform + Packer vSphere Automation for Ridgebot Botctl
+# Terraform + Packer vSphere Automation for App
 This module automates the provisioning of virtual machines in vSphere environment using [Packer](https://www.packer.io/) and [Terraform](https://www.terraform.io/).
 
 ## Features
@@ -6,7 +6,7 @@ This module automates the provisioning of virtual machines in vSphere environmen
 - Builds CentOS and Ubuntu VM templates using Packer
 - Uses Kickstart and cloud-init for unattended OS setup
 - Provisions VMs via Terraform with custom user-data and metadata templates
-- Includes post-install scripts for RidgeBot automated deployment
+- Includes post-install scripts for App automated deployment
 - Support 2 vcenter VM provision
 
 ## Structure
@@ -60,8 +60,7 @@ Terraform debug log: tf/log/terraform-debug-log.md
 MIT
 
 ## Contributor
-Yuqing(William) Qiao  
-Heran Wang
+Yuqing(William) Qiao
 
 <!-- Add more contributors as needed -->
 
